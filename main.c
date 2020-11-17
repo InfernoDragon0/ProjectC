@@ -21,7 +21,7 @@ const char *delimiters = " ?\t\n";
  * Main loop.
  */
 int main(int argc, char *argv[]) {
-
+	//commit Test
 	char input[MAX_INPUT];      /* buffer for holding the user input */
 	int inc;                    /* the number of words in the user input */
 	char *inv[MAX_INPUT];       /* pointers to the beginning of each word of input */
