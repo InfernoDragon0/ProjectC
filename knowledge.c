@@ -126,7 +126,6 @@ int knowledge_read(FILE *f) {
 
 
     fclose(f);
-    fflush(stdout);
     free(node);
 	return lines;
 }
