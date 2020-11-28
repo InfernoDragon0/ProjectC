@@ -310,8 +310,16 @@ int chatbot_is_smalltalk(const char *intent) {
 
 	/* to be implemented */
 
-	return 0;
+    const char* smalltalk[] = {
+        "hello", "hi", "bye", "done", "alright"
+    };
 
+  for (int i = 0; i < 6; i++) {
+    if (compare_token(intent, smalltalk[i]) == 0) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 
@@ -328,7 +336,23 @@ int chatbot_is_smalltalk(const char *intent) {
 int chatbot_do_smalltalk(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
+    if (compare_token("hello", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
+//snprintf used as there is buffer, n % output
+        snprintf(response, n, "Hi! How are you doing?");
+    }
+
+    else if (compare_token("bye", inv[0]) == 0) {
+
+        snprintf(response, n, "Goodbye %s! Have a nice day!", chatbot_username());
+    }
+    else if (compare_token("done", inv[0]) == 0) {
+
+        snprintf(response, n, "Can i help you with anything else?");
+    }
+  else if (compare_token("alright", inv[0]) == 0) {
+
+    snprintf(response, n, "Alright then.");
+  }
 
 	return 0;
-
 }
