@@ -34,8 +34,49 @@
 int knowledge_get(const char *intent, const char *entity, char *response, int n) {
 
 	/* to be implemented */
+	char *intentKB[] = {"Where", "What", "Who"};
+	char *entityKB[] = {"SIT","ICT1001","ICT1002","ICT1003","ICT1004","ICT1005"};
+	size_t entityKBLength = sizeof(entityKB) / sizeof(entityKB[0]);
+	size_t intentKBLength = sizeof(intentKB) / sizeof(intentKB[0]);
+	
+		for (int i = 0; i<intentKBLength; i++){
+		//where
+		if(compare_token(intent, intentKB[0]) == 0){
+			for(int i = 0; i< entityKBLength; i++){
+				if (compare_token(entity,entityKB[i]) == 0){
+					snprintf(response,n, "found in KB (where)");
+					return KB_OK;
+				}else{
+					return KB_NOTFOUND;
+				}
+			}
+		} //what
+		else if (compare_token(intent, intentKB[1]) == 0){
+					for(int i = 0; i< entityKBLength; i++){
+				if (compare_token(entity,entityKB[i]) == 0){
+					snprintf(response,n, "found in KB (what)");
+					return KB_OK;
+				}else{
+					return KB_NOTFOUND;
+				}
+			}
+		}//who
+		else if(compare_token(intent, intentKB[2]) == 0){
+					for(int i = 0; i< entityKBLength; i++){
+				if (compare_token(entity,entityKB[i]) == 0){
+					snprintf(response,n, "found in KB (who)");
+					return KB_OK;
+				}else{
+					return KB_NOTFOUND;
+				}
+			}
+		}else{
+			snprintf(response,n,"Intent is not a recognised question word");
+			return KB_INVALID;
+		}
+	}
 
-	return KB_NOTFOUND;
+	
 
 }
 

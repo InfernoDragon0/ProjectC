@@ -192,9 +192,10 @@ int chatbot_do_load(int inc, char *inv[], char *response, int n) {
  */
 int chatbot_is_question(const char *intent) {
 
-	/* to be implemented */
-
-	return 0;
+ 	if(compare_token(intent, "what") == 0 || compare_token(intent, "where") == 0 || compare_token(intent, "who") == 0){
+		 return 1;
+ 	}
+ 	return 0;
 
 }
 
@@ -215,6 +216,36 @@ int chatbot_is_question(const char *intent) {
 int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
+	char qnsIntent[MAX_INTENT];
+	strncpy(qnsIntent, inv[0], sizeof(qnsIntent)/sizeof(qnsIntent[0])); //Define char array to store qns intent
+
+	char qnsEntity[MAX_ENTITY]; //Define char array to store entity
+	qnsEntity[0] = '\0';
+
+	//Checks if question is less than 2 words (Ex. only stating "where is")
+	if (inc <= 2)
+	{	
+		if(compare_token(qnsIntent,"what") == 0){
+		snprintf(response,n,"Do you mean %s is ICT1002?",qnsIntent);
+		return 0;
+		}
+		else if(compare_token(qnsIntent,"where") == 0){
+		snprintf(response,n,"Do you mean %s is SIT?",qnsIntent);
+		return 0;
+		}
+		else if(compare_token(qnsIntent,"who") == 0){
+		snprintf(response,n,"Do you mean %s is Frank Guan?",qnsIntent);
+		return 0;
+		}
+	}
+	
+	//check if inv[1] contain "is" or "are"	
+		else if(compare_token(inv[1],"is") == 0  || compare_token(inv[1],"are") == 0){
+			strcat(qnsEntity,inv[2]);		
+		}				
+	
+
+	knowledge_get(qnsIntent,qnsEntity,response,n);
 
 	return 0;
 
@@ -308,12 +339,21 @@ int chatbot_do_save(int inc, char *inv[], char *response, int n) {
  */
 int chatbot_is_smalltalk(const char *intent) {
 
-	/* to be implemented */
+ /* to be implemented */
 
-	return 0;
+    const char* smalltalk[] = {
+        "hello", "hi", "bye", "done", "alright"
+    };
+	size_t smalltalkLength = sizeof(smalltalk)/sizeof(smalltalk[0]);
+
+  for (int i = 0; i < smalltalkLength; i++) {
+    if (compare_token(intent, smalltalk[i]) == 0) {
+      return 1;
+    }
+  }
+  return 0;
 
 }
-
 
 /*
  * Respond to smalltalk.
@@ -327,8 +367,24 @@ int chatbot_is_smalltalk(const char *intent) {
  */
 int chatbot_do_smalltalk(int inc, char *inv[], char *response, int n) {
 
-	/* to be implemented */
+ /* to be implemented */
+    if (compare_token("hello", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
+//snprintf used as there is buffer, n % output
+        snprintf(response, n, "Hi! How are you doing?");
+    }
 
-	return 0;
+    else if (compare_token("bye", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
 
+        snprintf(response, n, "Goodbye %s! Have a nice day!", chatbot_username());
+    }
+    else if (compare_token("done", inv[0]) == 0) {
+
+        snprintf(response, n, "Can i help you with anything else?");
+    }
+  else if (compare_token("alright", inv[0]) == 0 || compare_token("its", inv[0]) == 0 || compare_token("it's", inv[0]) == 0) {
+
+    snprintf(response, n, "Alright then.");
+  }
+
+ return 0;
 }
