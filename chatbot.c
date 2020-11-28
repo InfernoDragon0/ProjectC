@@ -156,8 +156,11 @@ int chatbot_do_exit(int inc, char *inv[], char *response, int n) {
 int chatbot_is_load(const char *intent) {
 
 	/* to be implemented */
-
-	return 0;
+	if(compare_token(intent, "load") == 0){
+        return 1;
+    }
+    else
+        return 0;
 
 }
 
@@ -175,7 +178,25 @@ int chatbot_do_load(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
 
-	return 0;
+		FILE *f;
+        int fileline = 0;
+        char userinput = inv[1];
+        if (! userinput){
+            strcpy(response,"Please indicate a file to load!");
+        }
+        else
+        {
+        if (f = fopen(inv[1], "r")){
+
+        	fileline = knowledge_read(f);
+            fclose(f);
+           	snprintf(response, n,"File consists of %d lines", fileline);
+        }
+        else{
+            snprintf(response, n, "File not found!");
+        }
+    }
+    return 0;
 
 }
 

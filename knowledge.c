@@ -115,9 +115,20 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
  */
 int knowledge_read(FILE *f) {
 
-	/* to be implemented */
+	int lines = 0;
+    size_t nodesize = MAX_INTENT;
+    char *node = malloc(nodesize * sizeof(char));
 
-	return 0;
+
+    for (node = getc(f); node != EOF; node = getc(f))
+        if (node == '\n')
+            lines = lines + 1;
+
+
+    fclose(f);
+    fflush(stdout);
+    free(node);
+	return lines;
 }
 
 
