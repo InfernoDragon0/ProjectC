@@ -38,7 +38,7 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 	char *entityKB[] = {"SIT","ICT1001","ICT1002","ICT1003","ICT1004","ICT1005"};
 	size_t entityKBLength = sizeof(entityKB) / sizeof(entityKB[0]);
 	size_t intentKBLength = sizeof(intentKB) / sizeof(intentKB[0]);
-	
+
 		for (int i = 0; i<intentKBLength; i++){
 		//where
 		if(compare_token(intent, intentKB[0]) == 0){
@@ -76,7 +76,7 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 		}
 	}
 
-	
+
 
 }
 
@@ -114,20 +114,50 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
  * Returns: the number of entity/response pairs successful read from the file
  */
 int knowledge_read(FILE *f) {
-
-	int lines = 0;
+    int lines = 0;
     size_t nodesize = MAX_INTENT;
     char *node = malloc(nodesize * sizeof(char));
+    int foundCount =0;
+    char *splitstr;
+    const char ch = '=';
+    char entity [64]; //should create function for dis 3
+    char intent[32];
+    char response[256];
 
+    while(getline(&node, &nodesize,f)!= KB_NOTFOUND){
+        if (strstr(node, "what")){
+            strcpy(intent, "WHAT");                     // Set Intent to WHAT until Next Intent Found
+        }
+        else if (strstr(node, "where")){
+            strcpy(intent, "WHERE");                    // Set Intent to WHERE until Next Intent Found
+        }
+        else if (strstr(node, "who")){
+            strcpy(intent, "WHO");
+        }
+        if (strchr(node,ch)){
+            splitstr = strtok(node, "=");          // Obtain the Entity from line of file
+            strcpy(entity, splitstr);
+            splitstr = strtok (NULL, "=");           // Obtain the Response from line of file
+            splitstr[strcspn(splitstr, "\n")] = 0;
+            strcpy(fileresponse, splitstr);
+            knowledge_put(intent, entity, fileresponse);    // Send to Knowledge_Put to insert into List
+            lines++;
+        }
+    }
 
-    for (node = getc(f); node != EOF; node = getc(f))
-        if (node == '\n')
-            lines = lines + 1;
-
-
-    fclose(f);
+    fflush(stdout);                                     // Flush any unecessary remaining input
     free(node);
-	return lines;
+
+     return linesCount;
+
+//    for (node = getc(f); node != EOF; node = getc(f))
+//        if (node == '\n')
+//            lines = lines + 1;
+//
+//
+//    fclose(f);
+//    free(node);
+//	return lines;
 }
 
 
