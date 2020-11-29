@@ -234,9 +234,25 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 int chatbot_is_reset(const char *intent) {
 
 	/* to be implemented */
+    return compare_token(intent, "reset") == 0;
+}
 
-	return 0;
 
+/*
+ * Reset the chatbot.
+ *
+ * See the comment at the top of the file for a description of how this
+ * function is used.
+ *
+ * Returns:
+ *   0 (the chatbot always continues chatting after beign reset)
+ */
+int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
+
+	/* to be implemented */
+    snprintf(response, n, "Hi! How can i help u?");
+
+	return 1;
 }
 
 
@@ -338,7 +354,7 @@ int chatbot_do_smalltalk(int inc, char *inv[], char *response, int n) {
 	/* to be implemented */
     if (compare_token("hello", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
 //snprintf used as there is buffer, n % output
-        snprintf(response, n, "Hi %s! How are you doing?");
+        snprintf(response, n, "Hi %s! How are you doing?", chatbot_username());
     }
 
     else if (compare_token("thanks", inv[0]) == 0) {
