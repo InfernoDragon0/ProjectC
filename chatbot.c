@@ -245,7 +245,7 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 
 	//Checks if question is less than 2 words (Ex. only stating "where is")
 	if (inc <= 2)
-	{	
+	{
 		if(compare_token(qnsIntent,"what") == 0){
 		snprintf(response,n,"Do you mean %s is ICT1002?",qnsIntent);
 		return 0;
@@ -259,12 +259,12 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 		return 0;
 		}
 	}
-	
-	//check if inv[1] contain "is" or "are"	
+
+	//check if inv[1] contain "is" or "are"
 		else if(compare_token(inv[1],"is") == 0  || compare_token(inv[1],"are") == 0){
-			strcat(qnsEntity,inv[2]);		
-		}				
-	
+			strcat(qnsEntity,inv[2]);
+		}
+
 
 	knowledge_get(qnsIntent,qnsEntity,response,n);
 
@@ -286,7 +286,12 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 int chatbot_is_reset(const char *intent) {
 
 	/* to be implemented */
-    return compare_token(intent, "reset") == 0;
+	if(compare_token(intent, "reset") == 0){
+        return 1;
+    }
+    else
+        return 0;
+
 }
 
 
@@ -303,10 +308,9 @@ int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
     snprintf(response, n, "Hi! How can i help u?");
-	return 1;
- 	}
- 	return 0;
-}
+
+    return 0;
+
 }
 
 
@@ -363,27 +367,19 @@ int chatbot_is_smalltalk(const char *intent) {
  /* to be implemented */
 
     const char* smalltalk[] = {
-<<<<<<< HEAD
         "hello", "hi", "thanks", "done", "alright"
     };
 
-  for (int i = 0; i < 6; i++) {
-=======
-        "hello", "hi", "bye", "done", "alright"
-    };
 	size_t smalltalkLength = sizeof(smalltalk)/sizeof(smalltalk[0]);
 
   for (int i = 0; i < smalltalkLength; i++) {
->>>>>>> b3b9ad4e8039d36c01465c36549776c7232889a3
     if (compare_token(intent, smalltalk[i]) == 0) {
       return 1;
     }
   }
   return 0;
-<<<<<<< HEAD
 }
 =======
->>>>>>> b3b9ad4e8039d36c01465c36549776c7232889a3
 
 }
 
@@ -399,45 +395,22 @@ int chatbot_is_smalltalk(const char *intent) {
  */
 int chatbot_do_smalltalk(int inc, char *inv[], char *response, int n) {
 
-<<<<<<< HEAD
 	/* to be implemented */
     if (compare_token("hello", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
 //snprintf used as there is buffer, n % output
         snprintf(response, n, "Hi %s! How are you doing?", chatbot_username());
     }
-
     else if (compare_token("thanks", inv[0]) == 0) {
 
         snprintf(response, n, "You're welcome %s!", chatbot_username());
-=======
- /* to be implemented */
-    if (compare_token("hello", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
-//snprintf used as there is buffer, n % output
-        snprintf(response, n, "Hi! How are you doing?");
-    }
-
-    else if (compare_token("bye", inv[0]) == 0 ||  compare_token("hi", inv[0]) == 0) {
-
-        snprintf(response, n, "Goodbye %s! Have a nice day!", chatbot_username());
->>>>>>> b3b9ad4e8039d36c01465c36549776c7232889a3
     }
     else if (compare_token("done", inv[0]) == 0) {
 
         snprintf(response, n, "Can i help you with anything else?");
     }
-<<<<<<< HEAD
   else if (compare_token("alright", inv[0]) == 0) {
 
     snprintf(response, n, "Alright then.");
   }
-
 	return 0;
-=======
-  else if (compare_token("alright", inv[0]) == 0 || compare_token("its", inv[0]) == 0 || compare_token("it's", inv[0]) == 0) {
-
-    snprintf(response, n, "Alright then.");
-  }
-
- return 0;
->>>>>>> b3b9ad4e8039d36c01465c36549776c7232889a3
 }
