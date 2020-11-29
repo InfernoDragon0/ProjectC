@@ -307,7 +307,9 @@ int chatbot_is_reset(const char *intent) {
 int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
-    snprintf(response, n, "Hi! How can i help u?");
+    system("CLS");
+
+    snprintf(response, n, "Hello, I'm %s.\n", chatbot_botname(), chatbot_botname());
 
     return 0;
 
