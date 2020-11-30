@@ -32,13 +32,30 @@
  *   KB_INVALID, if 'intent' is not a recognised question word
  */
 
-char *fileresponse;
+typedef struct {
+	char *intent;
+	char *entity;
+	char *response;
+} Knowledge;
+
+char *intentKB[] = {"Where", "What", "Who"};
+char *entityKB[] = {"SIT","ICT1001","ICT1002","ICT1003","ICT1004","ICT1005"};
+
+Knowledge *big_brain; 
 
 int knowledge_get(const char *intent, const char *entity, char *response, int n) {
 
 	/* to be implemented */
-	char *intentKB[] = {"Where", "What", "Who"};
-	char *entityKB[] = {"SIT","ICT1001","ICT1002","ICT1003","ICT1004","ICT1005"};
+	//for loop once only
+	//the following is not C but golang syntax, will convert tmr
+	//for i := 0; i < len(big_brain); i++ {
+	//	if big_brain[i].intent != intent && big_brain[i].entity != entity {
+	//		continue
+	//  }
+	//  fmt.println("i found the result! %s", big_brain[i].response);
+	//}
+
+	
 	size_t entityKBLength = sizeof(entityKB) / sizeof(entityKB[0]);
 	size_t intentKBLength = sizeof(intentKB) / sizeof(intentKB[0]);
 
