@@ -27,6 +27,9 @@
 #define KB_NOTFOUND -1
 #define KB_INVALID  -2
 #define KB_NOMEM    -3
+
+/* custom consts */
+#define ch '='
  
 /* functions defined in main.c */
 int compare_token(const char *token1, const char *token2);
@@ -55,5 +58,8 @@ int knowledge_put(const char *intent, const char *entity, const char *response);
 void knowledge_reset();
 int knowledge_read(FILE *f);
 void knowledge_write(FILE *f);
+
+//custom functions
+int read_line(char *node, FILE *f);
 
 #endif

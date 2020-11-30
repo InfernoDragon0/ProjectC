@@ -31,6 +31,9 @@
  *   KB_NOTFOUND, if no response could be found
  *   KB_INVALID, if 'intent' is not a recognised question word
  */
+
+char *fileresponse;
+
 int knowledge_get(const char *intent, const char *entity, char *response, int n) {
 
 	/* to be implemented */
@@ -76,7 +79,7 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 		}
 	}
 
-
+	return KB_INVALID;
 
 }
 
@@ -115,40 +118,48 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
  */
 int knowledge_read(FILE *f) {
     int lines = 0;
-    size_t nodesize = MAX_INTENT;
-    char *node = malloc(nodesize * sizeof(char));
-    int foundCount =0;
+	int foundCount = 0;
+
+    char *node = malloc(MAX_INTENT * sizeof(char)); 
     char *splitstr;
-    const char ch = '=';
+
     char entity [64]; //should create function for dis 3
     char intent[32];
     char response[256];
 
-    while(getline(&node, &nodesize,f)!= KB_NOTFOUND){
-        if (strstr(node, "what")){
+    while(read_line(node, f) != KB_NOTFOUND) {
+		
+        if (strstr(node, "what")) {
             strcpy(intent, "WHAT");                     // Set Intent to WHAT until Next Intent Found
         }
-        else if (strstr(node, "where")){
+        else if (strstr(node, "where")) {
             strcpy(intent, "WHERE");                    // Set Intent to WHERE until Next Intent Found
         }
-        else if (strstr(node, "who")){
+        else if (strstr(node, "who")) {
             strcpy(intent, "WHO");
         }
-        if (strchr(node,ch)){
-            splitstr = strtok(node, "=");          // Obtain the Entity from line of file
+        if (strchr(node,ch)) {
+            splitstr = strtok(node, "=");          // Split first token Obtain the Entity from line of file
             strcpy(entity, splitstr);
-            splitstr = strtok (NULL, "=");           // Obtain the Response from line of file
+
+            splitstr = strtok(NULL, "=");          // Find 2nd token Obtain the Response from line of file
+			strcpy(response, splitstr);
+
             splitstr[strcspn(splitstr, "\n")] = 0;
-            strcpy(fileresponse, splitstr);
-            knowledge_put(intent, entity, fileresponse);    // Send to Knowledge_Put to insert into List
+            
+            //knowledge_put(intent, entity, fileresponse);    // Send to Knowledge_Put to insert into List
+			printf("data %s found: %s\n", entity, response);
             lines++;
         }
     }
 
     fflush(stdout);                                     // Flush any unecessary remaining input
-    free(node);
+	if (node) {
+		free(node);
+	}
+    //free(node); //this crashes some reason
 
-     return linesCount;
+    return lines;
 
 //    for (node = getc(f); node != EOF; node = getc(f))
 //        if (node == '\n')
@@ -160,6 +171,15 @@ int knowledge_read(FILE *f) {
 //	return lines;
 }
 
+int read_line(char *node, FILE *f) {
+	//MAX_INTENT
+	if (fscanf(f, "%[^\n]", node) != EOF) {
+		fgetc(f); //bypass \n to read next line
+    	//printf("Data:%s \n", node);
+		return KB_OK;
+	}
+	return KB_NOTFOUND;
+}
 
 /*
  * Reset the knowledge base, removing all know entitities from all intents.

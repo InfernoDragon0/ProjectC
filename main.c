@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "chat1002.h"
+#include "chatbot.c"
+#include "knowledge.c"
 
 /* word delimiters */
 const char *delimiters = " ?\t\n";
@@ -23,9 +25,10 @@ const char *delimiters = " ?\t\n";
 int main(int argc, char *argv[]) {
 	//commit Test
 	char input[MAX_INPUT];      /* buffer for holding the user input */
-	int inc;                    /* the number of words in the user input */
 	char *inv[MAX_INPUT];       /* pointers to the beginning of each word of input */
 	char output[MAX_RESPONSE];  /* the chatbot's output */
+
+	int inc;                    /* the number of words in the user input */	
 	int len;                    /* length of a word */
 	int done = 0;               /* set to 1 to end the main loop */
 

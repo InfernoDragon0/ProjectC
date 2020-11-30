@@ -180,7 +180,7 @@ int chatbot_do_load(int inc, char *inv[], char *response, int n) {
 
 		FILE *f;
         int fileline = 0;
-        char userinput = inv[1];
+        char* userinput = inv[1];
         if (! userinput){
             strcpy(response,"Please indicate a file to load!");
         }
@@ -380,9 +380,6 @@ int chatbot_is_smalltalk(const char *intent) {
     }
   }
   return 0;
-}
-=======
-
 }
 
 /*
