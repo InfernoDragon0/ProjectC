@@ -391,7 +391,7 @@ int chatbot_is_save(const char *intent) {
 	{
 		return 0;
 	}
-	
+
 }
 
 
@@ -407,27 +407,15 @@ int chatbot_is_save(const char *intent) {
 int chatbot_do_save(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
-    char filechat[64];
-
-    if (inv[1] == NULL){
-        strcpy(response,"No file inputted!");                   // Error Response for No Input for File
-    }
-    else if (startWHERE == NULL && startWHAT == NULL && startWHO == NULL) {
-    	strcpy(response, "Database is empty!");
-    }
-    else{
-
-    	strcpy(filechat, inv[1]);
-
 
    		FILE *fptr;
-   		fptr = fopen(filechat, "w");
+   		fptr = fopen("sit.ini", "w");
     	if(fptr == NULL){
 			strcpy(response,"Error creating file");
 		}
 		else {
 			knowledge_write(fptr);
-    		snprintf(response, n, "My knowledge has been saved to %s.", filechat);
+    		snprintf(response, n, "My knowledge has been saved to sit.ini");
 		}
 
 		fclose(fptr);
