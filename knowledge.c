@@ -120,14 +120,13 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
  */
 int knowledge_read(FILE *f) {
     int lines = 0;
-	int foundCount = 0;
 
     char *node = malloc(MAX_INTENT * sizeof(char));
     char *splitstr;
 
-    char entity [64]; //should create function for dis 3
-    char intent[32];
-    char response[256];
+    char entity [MAX_ENTITY]; //should create function for dis 3
+    char intent[MAX_INTENT];
+    char response[MAX_RESPONSE];
 
     while(read_line(node, f) != KB_NOTFOUND) {
 

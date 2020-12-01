@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "chat1002.h"
-
+#include <stdlib.h>
 int awaiting_knowledge = 0; //set this to wait for knowledge
 Knowledge *awaiting = NULL;
 
@@ -364,7 +364,7 @@ int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 	knowledge_reset();
     system("CLS");
 
-    snprintf(response, n, "Hello, I'm %s.\n", chatbot_botname(), chatbot_botname());
+    snprintf(response, n, "Hello, I'm %s.\n", chatbot_botname());
 
     return 0;
 
@@ -419,7 +419,7 @@ int chatbot_do_save(int inc, char *inv[], char *response, int n) {
 
     	strcpy(filechat, inv[1]);
 
-    	int num;
+
    		FILE *fptr;
    		fptr = fopen(filechat, "w");
     	if(fptr == NULL){
