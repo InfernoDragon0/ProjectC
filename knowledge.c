@@ -195,7 +195,14 @@ int read_line(char *node, FILE *f) {
 void knowledge_reset() {
 
 	/* to be implemented */
-
+	Knowledge* temp = head;
+	Knowledge* store;
+	while (temp != NULL)
+	{
+		store = temp->next;
+		free(temp);
+		temp = store;
+	}
 }
 
 
