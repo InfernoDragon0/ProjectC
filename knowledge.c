@@ -217,40 +217,32 @@ void knowledge_reset() {
 void knowledge_write(FILE *f) {
 
 	/* to be implemented */
-    if (startWHAT!=NULL){
-            Knowledge*temp = startWHAT;
-            fprintf(f,"[%s]\n", "what");
-            while (temp != NULL){
+	char entity [MAX_ENTITY];
+    char intent[MAX_INTENT];
+    char response[MAX_RESPONSE];
+
+	Knowledge*temp = startWHAT;
+    while (temp != NULL){
+        if (strcpy(intent, "what")) {
+            if (startWHAT!=NULL){
                 fprintf(f,"%s=", temp->entity);
                 fprintf(f,"%s\n", temp->response);
                 temp = temp->next;
-            }
-        }
+                fprintf(f,"%s", "\n");
+                }
 
-        fprintf(f,"%s", "\n");
-
-        if (startWHO!=NULL){
-            Knowledge*temp = startWHO;
-            fprintf(f,"[%s]\n", "who");
-            while (temp != NULL){
+            else if (startWHERE!=NULL){
                 fprintf(f,"%s=", temp->entity);
                 fprintf(f,"%s\n", temp->response);
                 temp = temp->next;
-            }
-        }
+                fprintf(f,"%s", "\n");
+                }
 
-        fprintf(f,"%s", "\n");
-
-
-        if (startWHERE!=NULL){
-            Knowledge*temp = startWHERE;
-            fprintf(f,"[%s]\n", "where");
-            while (temp != NULL){
+            else (startWHO!=NULL){
                 fprintf(f,"%s=", temp->entity);
                 fprintf(f,"%s\n", temp->response);
                 temp = temp->next;
-            }
+                fprintf(f,"%s", "\n");
+                }
         }
-
-        fprintf(f,"%s", "\n");
-}
+    }
