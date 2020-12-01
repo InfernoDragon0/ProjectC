@@ -32,7 +32,7 @@
  *   KB_INVALID, if 'intent' is not a recognised question word
  */
 
-Knowledge *head = NULL; 
+Knowledge *head = NULL;
 
 int knowledge_get(const char *intent, const char *entity, char *response, int n) {
 
@@ -76,7 +76,7 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
 
 	//create our knowledge piece
 	Knowledge *knowledge_entity = (Knowledge *)malloc(sizeof(Knowledge)); //might wanna check for no mem
-	
+
 	knowledge_entity->intent = malloc(strlen(intent) + 1); //alloc and copy
 	strcpy(knowledge_entity->intent, intent);
 
@@ -87,10 +87,10 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
 	strcpy(knowledge_entity->response, response);
 	//my next is empty first
 	knowledge_entity->next = NULL;
-	
+
 	//check if initial head is created
 	if (head != NULL) {
-		
+
 		Knowledge *temp = head; //iterate the list to the last in list
 		while (temp->next != NULL) {
 			temp = temp->next;
@@ -122,7 +122,7 @@ int knowledge_read(FILE *f) {
     int lines = 0;
 	int foundCount = 0;
 
-    char *node = malloc(MAX_INTENT * sizeof(char)); 
+    char *node = malloc(MAX_INTENT * sizeof(char));
     char *splitstr;
 
     char entity [64]; //should create function for dis 3
@@ -130,7 +130,7 @@ int knowledge_read(FILE *f) {
     char response[256];
 
     while(read_line(node, f) != KB_NOTFOUND) {
-		
+
         if (strstr(node, "what")) {
             strcpy(intent, "WHAT");                     // Set Intent to WHAT until Next Intent Found
         }
@@ -148,7 +148,7 @@ int knowledge_read(FILE *f) {
 			strcpy(response, splitstr);
 
             splitstr[strcspn(splitstr, "\n")] = 0;
-            
+
             knowledge_put(intent, entity, response);    // Send to Knowledge_Put to insert into List
             lines++;
         }
@@ -215,5 +215,40 @@ void knowledge_reset() {
 void knowledge_write(FILE *f) {
 
 	/* to be implemented */
+    if (startWHAT!=NULL){
+            Knowledge*temp = startWHAT;
+            fprintf(f,"[%s]\n", "what");
+            while (temp != NULL){
+                fprintf(f,"%s=", temp->entity);
+                fprintf(f,"%s\n", temp->response);
+                temp = temp->next;
+            }
+        }
 
+        fprintf(f,"%s", "\n");
+
+        if (startWHO!=NULL){
+            Knowledge*temp = startWHO;
+            fprintf(f,"[%s]\n", "what");
+            while (temp != NULL){
+                fprintf(f,"%s=", temp->entity);
+                fprintf(f,"%s\n", temp->response);
+                temp = temp->next;
+            }
+        }
+
+        fprintf(f,"%s", "\n");
+
+
+        if (startWHERE!=NULL){
+            Knowledge*temp = startWHERE;
+            fprintf(f,"[%s]\n", "what");
+            while (temp != NULL){
+                fprintf(f,"%s=", temp->entity);
+                fprintf(f,"%s\n", temp->response);
+                temp = temp->next;
+            }
+        }
+
+        fprintf(f,"%s", "\n");
 }

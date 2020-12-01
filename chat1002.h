@@ -4,7 +4,7 @@
  * This file contains the definitions and function prototypes for all of
  * features of the ICT1002 chatbot.
  */
- 
+
 #ifndef _CHAT1002_H
 #define _CHAT1002_H
 
@@ -30,7 +30,7 @@
 
 /* custom consts */
 #define ch '='
- 
+
 /* functions defined in main.c */
 int compare_token(const char *token1, const char *token2);
 void prompt_user(char *buf, int n, const char *format, ...);
@@ -62,11 +62,15 @@ void knowledge_write(FILE *f);
 //custom functions
 int read_line(char *node, FILE *f);
 
+
 typedef struct knowledge {
 	char *intent;
 	char *entity;
 	char *response;
 	struct knowledge *next;
 } Knowledge;
+
+Knowledge *startWHO, *startWHAT, *startWHERE;
+
 
 #endif
