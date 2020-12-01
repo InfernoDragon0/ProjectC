@@ -419,14 +419,10 @@ int chatbot_do_save(int inc, char *inv[], char *response, int n) {
 		}
 
 		fclose(fptr);
-
-
-
+		
+	return 0;
     }
 
-	return 0;
-
-}
 
 
 /*
