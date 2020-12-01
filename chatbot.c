@@ -384,9 +384,11 @@ int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 int chatbot_is_save(const char *intent) {
 
 	/* to be implemented */
-
-	return 0;
-
+	 if(compare_token(intent, "what") == 0 || compare_token(intent, "where") == 0 || compare_token(intent, "who")){
+        return 1;
+    }
+    else
+        return 0;
 }
 
 
