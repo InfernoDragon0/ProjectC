@@ -9,7 +9,9 @@
                 "/EHsc",
                 "/Fe:",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
-                "${file}"
+                "${file}",
+                "${fileDirname}\\knowledge.c",
+                "${fileDirname}\\chatbot.c"
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
