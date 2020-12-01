@@ -261,8 +261,14 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 	}
 
 	//check if inv[1] contain "is" or "are"
-		else if(compare_token(inv[1],"is") == 0  || compare_token(inv[1],"are") == 0){
-			strcat(qnsEntity,inv[2]);
+		else if(compare_token(inv[1],"is") == 0  || compare_token(inv[1],"are") == 0) {
+			strcpy(qnsEntity, inv[2]);
+			
+			//concat all the rest of the data with space
+			for (int i = 3; i < inc; i++) {
+				strcat(qnsEntity, " ");
+				strcat(qnsEntity, inv[i]);
+			}
 		}
 
 
