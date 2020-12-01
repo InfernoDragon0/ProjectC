@@ -44,6 +44,8 @@
 #include <string.h>
 #include "chat1002.h"
 
+int awaiting_knowledge = 0; //set this to wait for knowledge
+Knowledge *awaiting = NULL;
 
 /*
  * Get the name of the chatbot.
@@ -84,6 +86,37 @@ int chatbot_main(int inc, char *inv[], char *response, int n) {
 	/* check for empty input */
 	if (inc < 1) {
 		snprintf(response, n, "");
+		return 0;
+	}
+
+	if (awaiting_knowledge && awaiting != NULL) { //consume next input as knowledge, unless the user doesnt know
+		if (strcmp(inv[0], "no") != 0) {
+			char learn[MAX_ENTITY];
+			strcpy(learn, inv[0]);
+				
+			//concat all the rest of the data with space
+			for (int i = 1; i < inc; i++) {
+				strcat(learn, " ");
+				strcat(learn, inv[i]);
+			}
+
+			if (knowledge_put(awaiting->intent, awaiting->entity, learn) != 0) {
+				snprintf(response, n, "I had trouble learning the knowledge.");
+			}
+			else {
+				snprintf(response, n, "I have learned new things!");
+			}
+			
+		}
+		else {
+			snprintf(response, n, "u bad bad");
+		}
+
+		//clear temp learner
+		free(awaiting);
+		awaiting = NULL;
+		awaiting_knowledge = 0;
+
 		return 0;
 	}
 
@@ -271,8 +304,23 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 			}
 		}
 
+	if (knowledge_get(qnsIntent,qnsEntity,response,n) == -1) {
+		awaiting = (Knowledge *) malloc(sizeof(Knowledge));
+		//store the data to learn
+		awaiting->intent = malloc(strlen(qnsIntent) + 1); //alloc and copy
+		strcpy(awaiting->intent, qnsIntent);
 
-	knowledge_get(qnsIntent,qnsEntity,response,n);
+		awaiting->entity = malloc(strlen(qnsEntity) + 1);;
+		strcpy(awaiting->entity, qnsEntity);
+
+		awaiting->response = malloc(strlen(response) + 1);;
+		strcpy(awaiting->response, response);
+		
+		//ignore next anyways
+		//awaiting->next = NULL;
+
+		awaiting_knowledge = 1;
+	}
 
 	return 0;
 

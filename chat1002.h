@@ -62,4 +62,11 @@ void knowledge_write(FILE *f);
 //custom functions
 int read_line(char *node, FILE *f);
 
+typedef struct knowledge {
+	char *intent;
+	char *entity;
+	char *response;
+	struct knowledge *next;
+} Knowledge;
+
 #endif

@@ -32,29 +32,9 @@
  *   KB_INVALID, if 'intent' is not a recognised question word
  */
 
-typedef struct knowledge {
-	char *intent;
-	char *entity;
-	char *response;
-	struct knowledge *next;
-} Knowledge;
-
-char *intentKB[] = {"Where", "What", "Who"};
-char *entityKB[] = {"SIT","ICT1001","ICT1002","ICT1003","ICT1004","ICT1005"};
-
 Knowledge *head = NULL; 
 
 int knowledge_get(const char *intent, const char *entity, char *response, int n) {
-
-	/* to be implemented */
-	//for loop once only
-	//the following is not C but golang syntax, will convert tmr
-	//for i := 0; i < len(big_brain); i++ {
-	//	if big_brain[i].intent != intent && big_brain[i].entity != entity {
-	//		continue
-	//  }
-	//  fmt.println("i found the result! %s", big_brain[i].response)
-	//}
 
 	if (head != NULL) { //check if we loaded things already
 		Knowledge *finder = head;
@@ -66,7 +46,7 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 			snprintf(response, n, "i know! %s", finder->response);
 			return KB_OK; //stop when found
 		}
-		snprintf(response, n, "You will never know %s is %s", intent, entity);
+		snprintf(response, n, "Do you have an answer to %s is %s?", intent, entity);
 		return KB_NOTFOUND; //if whole loop succeeds without returning, then it is not found.
 	}
 	else {
