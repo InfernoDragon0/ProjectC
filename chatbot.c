@@ -93,7 +93,7 @@ int chatbot_main(int inc, char *inv[], char *response, int n) {
 		if (strcmp(inv[0], "no") != 0) {
 			char learn[MAX_ENTITY];
 			strcpy(learn, inv[0]);
-				
+
 			//concat all the rest of the data with space
 			for (int i = 1; i < inc; i++) {
 				strcat(learn, " ");
@@ -106,7 +106,7 @@ int chatbot_main(int inc, char *inv[], char *response, int n) {
 			else {
 				snprintf(response, n, "I have learned new things!");
 			}
-			
+
 		}
 		else {
 			snprintf(response, n, "u bad bad");
@@ -296,7 +296,7 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 	//check if inv[1] contain "is" or "are"
 		else if(compare_token(inv[1],"is") == 0  || compare_token(inv[1],"are") == 0) {
 			strcpy(qnsEntity, inv[2]);
-			
+
 			//concat all the rest of the data with space
 			for (int i = 3; i < inc; i++) {
 				strcat(qnsEntity, " ");
@@ -315,7 +315,7 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 
 		awaiting->response = malloc(strlen(response) + 1);;
 		strcpy(awaiting->response, response);
-		
+
 		//ignore next anyways
 		//awaiting->next = NULL;
 
@@ -362,7 +362,7 @@ int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
 	knowledge_reset();
-    //system("CLS");
+    system("CLS");
 
     snprintf(response, n, "Hello, I'm %s.\n", chatbot_botname(), chatbot_botname());
 
@@ -384,9 +384,14 @@ int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 int chatbot_is_save(const char *intent) {
 
 	/* to be implemented */
-
-	return 0;
-
+	if(compare_token(intent, "save") == 0){
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+	
 }
 
 
@@ -402,6 +407,34 @@ int chatbot_is_save(const char *intent) {
 int chatbot_do_save(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
+    char filechat[64];
+
+    if (inv[1] == NULL){
+        strcpy(response,"No file inputted!");                   // Error Response for No Input for File
+    }
+    else if (startWHERE == NULL && startWHAT == NULL && startWHO == NULL) {
+    	strcpy(response, "Database is empty!");
+    }
+    else{
+
+    	strcpy(filechat, inv[1]);
+
+    	int num;
+   		FILE *fptr;
+   		fptr = fopen(filechat, "w");
+    	if(fptr == NULL){
+			strcpy(response,"Error creating file");
+		}
+		else {
+			knowledge_write(fptr);
+    		snprintf(response, n, "My knowledge has been saved to %s.", filechat);
+		}
+
+		fclose(fptr);
+
+
+
+    }
 
 	return 0;
 
