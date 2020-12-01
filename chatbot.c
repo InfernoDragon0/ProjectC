@@ -408,20 +408,29 @@ int chatbot_do_save(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
 
-   		FILE *fptr;
-   		fptr = fopen("sit.ini", "w");
-    	if(fptr == NULL){
-			strcpy(response,"Error creating file");
-		}
-		else {
-			knowledge_write(fptr);
-    		snprintf(response, n, "My knowledge has been saved to sit.ini");
-		}
+        FILE *fptr;
+        char* userinput = inv[1];
+        
+        if(inc >=3){
+            fptr = fopen(inv[2], "w");
+            knowledge_write(fptr);
+            fclose(fptr);
+            snprintf(response, n, "My knowledge has been saved to %s",inv[2]);
+        }
 
-		fclose(fptr);
-		
-	return 0;
+        else if((inc == 2) && ((compare_token(userinput,"to") == 0) || (compare_token(userinput,"as") == 0))){
+            snprintf(response, n, "Please state a save file name!");
+        }
+        else if(inc ==1){
+            snprintf(response,n,"Do you mean save as \"desiredName.ini?\" ");
+        }
+        else if((compare_token(userinput,"to") !=0 )||(compare_token(userinput,"as") !=0)){
+            snprintf(response, n, "I don't understand \"%s %s\"."" Please use 'as' or 'to'", inv[0],inv[1]);
+        }
+                        
+    return 0;
     }
+
 
 
 
