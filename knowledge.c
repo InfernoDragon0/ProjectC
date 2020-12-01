@@ -222,24 +222,24 @@ void knowledge_write(FILE *f) {
 
 	Knowledge *temp = head;
 	strcpy(currentIntent, "what"); //initial start with what
-	//fprintf(f,"[what]\n"); //initial print
+	if(compare_token(temp->intent,currentIntent)==0){
+		fprintf(f,"[what]\n"); //initial print
+	}
 
 	while (temp != NULL) {
 		
-		if (strcmp(temp->intent, currentIntent) == 0) {
-			//still same intent			
+		if (compare_token(temp->intent, currentIntent) == 0) {
+			//still same intent
 			for(int i=0; i<strlen(currentIntent);i++){
-				currentIntent[i]=tolower(currentIntent[i]);
-			}
-			fprintf(f, "[%s]\n", currentIntent);
+			currentIntent[i]=tolower(currentIntent[i]);
+			}	
 			fprintf(f,"%s=%s\n", temp->entity, temp->response);
 		}
 		else {	
-			
 			strcpy(currentIntent, temp->intent);
 			for(int i=0; i<strlen(currentIntent);i++){
-				currentIntent[i]=tolower(currentIntent[i]);
-			}
+			currentIntent[i]=tolower(currentIntent[i]);
+			}	
 			fprintf(f, "[%s]\n", currentIntent);
 			fprintf(f,"%s=%s\n", temp->entity, temp->response);
 			//continue; //skip
