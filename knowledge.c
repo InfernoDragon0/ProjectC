@@ -207,12 +207,10 @@ int knowledge_read(FILE *f) {
 
 	//this is a debug printing the brain
 	Knowledge *temp = head;
-	while (temp->next != NULL) { //the last isnt printed
+	while (temp != NULL) {
 		printf("the brain stored intent: %s found: %s ||| %s\n", temp->intent, temp->entity, temp->response);
 		temp = temp->next;
 	}
-	//print last
-	printf("the brain stored intent: %s found: %s ||| %s\n", temp->intent, temp->entity, temp->response);
 
     return lines;
 
