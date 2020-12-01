@@ -32,16 +32,17 @@
  *   KB_INVALID, if 'intent' is not a recognised question word
  */
 
-typedef struct {
+typedef struct knowledge {
 	char *intent;
 	char *entity;
 	char *response;
+	struct knowledge *next;
 } Knowledge;
 
 char *intentKB[] = {"Where", "What", "Who"};
 char *entityKB[] = {"SIT","ICT1001","ICT1002","ICT1003","ICT1004","ICT1005"};
 
-Knowledge *big_brain; 
+Knowledge *head = NULL; 
 
 int knowledge_get(const char *intent, const char *entity, char *response, int n) {
 
@@ -52,7 +53,7 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 	//	if big_brain[i].intent != intent && big_brain[i].entity != entity {
 	//		continue
 	//  }
-	//  fmt.println("i found the result! %s", big_brain[i].response);
+	//  fmt.println("i found the result! %s", big_brain[i].response)
 	//}
 
 	
@@ -118,12 +119,41 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
  */
 int knowledge_put(const char *intent, const char *entity, const char *response) {
 
-	/* to be implemented */
+	//create our knowledge piece
+	Knowledge *knowledge_entity = (Knowledge *)malloc(sizeof(Knowledge)); //might wanna check for no mem
+	
+	knowledge_entity->intent = malloc(strlen(intent) + 1); //alloc and copy
+	strcpy(knowledge_entity->intent, intent);
+
+	knowledge_entity->entity = malloc(strlen(entity) + 1);;
+	strcpy(knowledge_entity->entity, entity);
+
+	knowledge_entity->response = malloc(strlen(response) + 1);;
+	strcpy(knowledge_entity->response, response);
+	//my next is empty first
+	knowledge_entity->next = NULL;
+	
+	//check if initial head is created
+	if (head != NULL) {
+		
+		Knowledge *temp = head; //iterate the list to the last in list
+		while (temp->next != NULL) {
+			temp = temp->next;
+		}
+		temp->next = knowledge_entity;
+		printf("ADDED NEXT %s -> %s\n", temp->next->response, temp->response);
+		return KB_OK;
+	}
+	else {
+		//create first head
+		head = knowledge_entity;
+		printf("CREATED HEAD FOR %s\n", head->response);
+		return KB_OK;
+	}
 
 	return KB_INVALID;
 
 }
-
 
 /*
  * Read a knowledge base from a file.
@@ -164,8 +194,7 @@ int knowledge_read(FILE *f) {
 
             splitstr[strcspn(splitstr, "\n")] = 0;
             
-            //knowledge_put(intent, entity, fileresponse);    // Send to Knowledge_Put to insert into List
-			printf("data %s found: %s\n", entity, response);
+            knowledge_put(intent, entity, response);    // Send to Knowledge_Put to insert into List
             lines++;
         }
     }
@@ -175,6 +204,15 @@ int knowledge_read(FILE *f) {
 		free(node);
 	}
     //free(node); //this crashes some reason
+
+	//this is a debug printing the brain
+	Knowledge *temp = head;
+	while (temp->next != NULL) { //the last isnt printed
+		printf("the brain stored intent: %s found: %s ||| %s\n", temp->intent, temp->entity, temp->response);
+		temp = temp->next;
+	}
+	//print last
+	printf("the brain stored intent: %s found: %s ||| %s\n", temp->intent, temp->entity, temp->response);
 
     return lines;
 
