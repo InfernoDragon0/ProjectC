@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "chat1002.h"
+#include <ctype.h>
 
 /*
  * Get the response to a question.
@@ -226,11 +227,19 @@ void knowledge_write(FILE *f) {
 	while (temp != NULL) {
 		
 		if (strcmp(temp->intent, currentIntent) == 0) {
-			//still same intent
+			//still same intent			
+			for(int i=0; i<strlen(currentIntent);i++){
+				currentIntent[i]=tolower(currentIntent[i]);
+			}
+			fprintf(f, "[%s]\n", currentIntent);
 			fprintf(f,"%s=%s\n", temp->entity, temp->response);
 		}
 		else {	
+			
 			strcpy(currentIntent, temp->intent);
+			for(int i=0; i<strlen(currentIntent);i++){
+				currentIntent[i]=tolower(currentIntent[i]);
+			}
 			fprintf(f, "[%s]\n", currentIntent);
 			fprintf(f,"%s=%s\n", temp->entity, temp->response);
 			//continue; //skip
