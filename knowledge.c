@@ -56,48 +56,23 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 	//  fmt.println("i found the result! %s", big_brain[i].response)
 	//}
 
-	
-	size_t entityKBLength = sizeof(entityKB) / sizeof(entityKB[0]);
-	size_t intentKBLength = sizeof(intentKB) / sizeof(intentKB[0]);
-
-		for (int i = 0; i<intentKBLength; i++){
-		//where
-		if(compare_token(intent, intentKB[0]) == 0){
-			for(int i = 0; i< entityKBLength; i++){
-				if (compare_token(entity,entityKB[i]) == 0){
-					snprintf(response,n, "found in KB (where)");
-					return KB_OK;
-				}else{
-					return KB_NOTFOUND;
-				}
+	if (head != NULL) { //check if we loaded things already
+		Knowledge *finder = head;
+		while (finder != NULL) {
+			if (compare_token(finder->intent,intent) != 0 || compare_token(finder->entity, entity) != 0) {
+				finder = finder->next;
+				continue;
 			}
-		} //what
-		else if (compare_token(intent, intentKB[1]) == 0){
-					for(int i = 0; i< entityKBLength; i++){
-				if (compare_token(entity,entityKB[i]) == 0){
-					snprintf(response,n, "found in KB (what)");
-					return KB_OK;
-				}else{
-					return KB_NOTFOUND;
-				}
-			}
-		}//who
-		else if(compare_token(intent, intentKB[2]) == 0){
-					for(int i = 0; i< entityKBLength; i++){
-				if (compare_token(entity,entityKB[i]) == 0){
-					snprintf(response,n, "found in KB (who)");
-					return KB_OK;
-				}else{
-					return KB_NOTFOUND;
-				}
-			}
-		}else{
-			snprintf(response,n,"Intent is not a recognised question word");
-			return KB_INVALID;
+			snprintf(response, n, "i know! %s", finder->response);
+			return KB_OK; //stop when found
 		}
+		snprintf(response, n, "You will never know %s is %s", intent, entity);
+		return KB_NOTFOUND; //if whole loop succeeds without returning, then it is not found.
 	}
-
-	return KB_INVALID;
+	else {
+		snprintf(response, n, "you have not loaded my brain yet");
+		return KB_INVALID;
+	}
 
 }
 
