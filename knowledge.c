@@ -50,8 +50,8 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
 		return KB_NOTFOUND; //if whole loop succeeds without returning, then it is not found.
 	}
 	else {
-		snprintf(response, n, "you have not loaded my brain yet");
-		return KB_INVALID;
+		snprintf(response, n, "Do you have an answer to %s is %s?", intent, entity);
+		return KB_NOTFOUND;
 	}
 
 }
@@ -195,14 +195,28 @@ int read_line(char *node, FILE *f) {
 void knowledge_reset() {
 
 	/* to be implemented */
-	Knowledge* temp = head;
-	Knowledge* store;
-	while (temp != NULL)
-	{
-		store = temp->next;
+	// Knowledge* temp = head;
+	// Knowledge* store;
+	// while (temp != NULL)
+	// {
+	// 	store = temp->next;
+	// 	free(temp->entity);
+	// 	free(temp->intent);
+	// 	free(temp->response);
+	// 	temp = store;
+	// }
+
+	Knowledge *nextTemp;
+	for (Knowledge *temp = head; temp; temp = nextTemp) {
+		nextTemp = temp->next;
+		printf("CLEARING %s\n", temp->response);
+		free(temp->entity);
+		free(temp->intent);
+		free(temp->response);
 		free(temp);
-		temp = store;
+		temp = NULL;
 	}
+	head = NULL;
 }
 
 

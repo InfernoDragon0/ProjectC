@@ -362,7 +362,7 @@ int chatbot_do_reset(int inc, char *inv[], char *response, int n) {
 
 	/* to be implemented */
 	knowledge_reset();
-    system("CLS");
+    //system("CLS");
 
     snprintf(response, n, "Hello, I'm %s.\n", chatbot_botname(), chatbot_botname());
 
