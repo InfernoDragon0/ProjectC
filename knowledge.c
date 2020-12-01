@@ -232,7 +232,7 @@ void knowledge_write(FILE *f) {
 
         if (startWHO!=NULL){
             Knowledge*temp = startWHO;
-            fprintf(f,"[%s]\n", "what");
+            fprintf(f,"[%s]\n", "who");
             while (temp != NULL){
                 fprintf(f,"%s=", temp->entity);
                 fprintf(f,"%s\n", temp->response);
@@ -245,7 +245,7 @@ void knowledge_write(FILE *f) {
 
         if (startWHERE!=NULL){
             Knowledge*temp = startWHERE;
-            fprintf(f,"[%s]\n", "what");
+            fprintf(f,"[%s]\n", "where");
             while (temp != NULL){
                 fprintf(f,"%s=", temp->entity);
                 fprintf(f,"%s\n", temp->response);
