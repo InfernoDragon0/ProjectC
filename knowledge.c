@@ -81,10 +81,10 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
 	knowledge_entity->intent = malloc(strlen(intent) + 1); //alloc and copy
 	strcpy(knowledge_entity->intent, intent);
 
-	knowledge_entity->entity = malloc(strlen(entity) + 1);;
+	knowledge_entity->entity = malloc(strlen(entity) + 1);
 	strcpy(knowledge_entity->entity, entity);
 
-	knowledge_entity->response = malloc(strlen(response) + 1);;
+	knowledge_entity->response = malloc(strlen(response) + 1);
 	strcpy(knowledge_entity->response, response);
 	//my next is empty first
 	knowledge_entity->next = NULL;
@@ -199,9 +199,9 @@ void knowledge_reset() {
 	for (Knowledge *temp = head; temp; temp = nextTemp) {
 		nextTemp = temp->next;
 		printf("CLEARING: %s\n", temp->response);
-		// free(temp->response);
-		// free(temp->entity);
-		// free(temp->intent);
+		free(temp->response);
+		free(temp->entity);
+		free(temp->intent);
 		free(temp);
 		temp = NULL;
 	}
