@@ -132,13 +132,13 @@ int knowledge_read(FILE *f) {
     while(read_line(node, f) != KB_NOTFOUND) {
 
         if (strstr(node, "what")) {
-            strcpy(intent, "WHAT");                     // Set Intent to WHAT until Next Intent Found
+            strcpy(intent, "what");                     // Set Intent to WHAT until Next Intent Found
         }
         else if (strstr(node, "where")) {
-            strcpy(intent, "WHERE");                    // Set Intent to WHERE until Next Intent Found
+            strcpy(intent, "where");                    // Set Intent to WHERE until Next Intent Found
         }
         else if (strstr(node, "who")) {
-            strcpy(intent, "WHO");
+            strcpy(intent, "who");
         }
         if (strchr(node,ch)) {
             splitstr = strtok(node, "=");          // Split first token Obtain the Entity from line of file
