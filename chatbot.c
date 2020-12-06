@@ -313,13 +313,8 @@ int chatbot_do_question(int inc, char *inv[], char *response, int n) {
 		awaiting = (Knowledge *) malloc(sizeof(Knowledge));
 		
 		/*store the data to learn*/
-		//awaiting->intent = malloc(strlen(qnsIntent) + 1); //alloc and copy
 		strcpy(awaiting->intent, qnsIntent);
-
-		//awaiting->entity = malloc(strlen(qnsEntity) + 1);;
 		strcpy(awaiting->entity, qnsEntity);
-
-		//awaiting->response = malloc(strlen(response) + 1);;
 		strcpy(awaiting->response, response);	
 
 		awaiting_knowledge = 1;
