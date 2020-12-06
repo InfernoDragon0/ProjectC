@@ -123,7 +123,7 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
  */
 int knowledge_read(FILE *f) {
     int lines = 0;											/*Lines counter*/
-    char *node = malloc((MAX_ENTITY + MAX_RESPONSE) * sizeof(char)); //big buffer for node for the max size of the entire entity=response
+    char *node = malloc((MAX_ENTITY + MAX_RESPONSE + 3) * sizeof(char)); //big buffer for node for the max size of the entire entity=response
     char *splitstr;
     char entity [MAX_ENTITY]; 								
     char intent[MAX_INTENT];
