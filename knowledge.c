@@ -70,23 +70,22 @@ int knowledge_get(const char *intent, const char *entity, char *response, int n)
  *   response  - the response for this question and entity
  *
  * Returns:
- *   KB_FOUND, if successful
+ *   KB_OK, if successful
  *   KB_NOMEM, if there was a memory allocation failure
  *   KB_INVALID, if the intent is not a valid question word
  */
 int knowledge_put(const char *intent, const char *entity, const char *response) {
 
 	/*Create our knowledge piece*/
-	Knowledge *knowledge_entity = (Knowledge *)malloc(sizeof(Knowledge)); //might wanna check for no mem
+	Knowledge *knowledge_entity = malloc(sizeof(Knowledge)); //do not cast mallocs, bad idea
 
-	/*Alloc and copy*/
-	knowledge_entity->intent = malloc(strlen(intent) + 1); 
+	if (knowledge_entity == NULL) {
+		return KB_NOMEM;
+	}
+
+	/*direct copy without malloc since we know the size*/
 	strcpy(knowledge_entity->intent, intent);
-
-	knowledge_entity->entity = malloc(strlen(entity) + 1);
 	strcpy(knowledge_entity->entity, entity);
-
-	knowledge_entity->response = malloc(strlen(response) + 1);
 	strcpy(knowledge_entity->response, response);
 
 	/*Next is empty first*/
@@ -124,7 +123,7 @@ int knowledge_put(const char *intent, const char *entity, const char *response) 
  */
 int knowledge_read(FILE *f) {
     int lines = 0;											/*Lines counter*/
-    char *node = malloc(MAX_INTENT * sizeof(char));
+    char *node = malloc((MAX_ENTITY + MAX_RESPONSE) * sizeof(char)); //big buffer for node for the max size of the entire entity=response
     char *splitstr;
     char entity [MAX_ENTITY]; 								
     char intent[MAX_INTENT];
@@ -160,7 +159,11 @@ int knowledge_read(FILE *f) {
             splitstr[strcspn(splitstr, "\n")] = 0;
 
 			/*Send to Knowledge_Put to insert into List*/
-            knowledge_put(intent, entity, response);
+            int success = knowledge_put(intent, entity, response);
+			if (success == KB_NOMEM) {
+				printf("Memory allocation failed for knowledge_put");
+				continue;
+			}
             
 			/*Add counter*/
 			lines++;
@@ -202,9 +205,6 @@ void knowledge_reset() {
 	for (Knowledge *temp = head; temp; temp = nextTemp) {
 		nextTemp = temp->next;
 		printf("CLEARING: %s\n", temp->response);
-		free(temp->response);
-		free(temp->entity);
-		free(temp->intent);
 		free(temp);
 		temp = NULL;
 	}
@@ -222,6 +222,10 @@ void knowledge_reset() {
 void knowledge_write(FILE *f) {
 
     char currentIntent[MAX_INTENT];
+
+	if (head == NULL) { //no save if theres no data
+		return;
+	}
 
 	Knowledge *temp = head;
 	

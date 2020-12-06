@@ -63,10 +63,10 @@ void knowledge_write(FILE *f);
 int read_line(char *node, FILE *f);
 
 
-typedef struct knowledge {
-	char *intent;
-	char *entity;
-	char *response;
+typedef struct knowledge { //since we can assume the size of the max, we dont malloc unnecessarily
+	char intent[MAX_INTENT];
+	char entity[MAX_ENTITY];
+	char response[MAX_RESPONSE];
 	struct knowledge *next;
 } Knowledge;
 
